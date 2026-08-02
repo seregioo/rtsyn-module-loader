@@ -1,0 +1,88 @@
+# RTSyn Plugin Loader
+
+The loader accepts a built shared library, a module root directory, or a module
+root `xmake.lua`. Module roots are configured and built with Xmake before the
+generated shared library is opened.
+
+When a module root is used, the loader runs:
+
+```bash
+xmake f -y --mode=release
+xmake build -y
+```
+
+The Xmake executable can be overridden with:
+
+```bash
+export RTSYN_XMAKE_BIN=/path/to/xmake
+```
+
+After building, the loader searches the module `build` directory for a shared
+library, skips Xmake package caches, and prefers the shared library whose target
+name matches the module root directory.
+
+## Usage
+
+### Update
+
+Make sure you have last version of the dependencies:
+
+```bash
+xrepo update-repo
+xmake require --upgrade
+```
+
+For development you may need to run:
+
+```bash
+xmake require --upgrade -fy <dependency_name>
+```
+
+### Compiling
+
+For compiling:
+
+```bash
+xmake
+```
+
+### Tests
+
+For running test:
+
+```bash
+xmake test
+```
+
+For enabling valgrind, before running tests:
+
+```bash
+xmake f --valgrind=y
+```
+
+For disabling valgrind, just replace `y` for `n`.
+
+### Local development
+
+If you want to test your changes locally from different parts of RTSyn, export the path where you have all the repos:
+
+```bash
+export RTSYN_WORKSPACE=<PATH>
+```
+
+> [!WARNING]
+> This expects you also the `rtsyn-xmake-repo`.
+
+### Cleaning
+
+To remove all generated build artifacts:
+
+```bash
+xmake clean --all
+```
+
+To also reset cached configuration and tool detection:
+
+```bash
+xmake f -c
+```
